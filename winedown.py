@@ -45,40 +45,25 @@ def build_response(session_attributes, speechlet_response):
 
 # --------------- Functions that control the skill's behavior -----------------
 
-def get_welcome_response(intent, session):
+def get_welcome_response(session):
     """ If we wanted to initialize the session to have some attributes we could
     add those here
     """
-
-    intent = session.get('attributes', {}).get('intent', {})
-    session_attributes = {
-        'intent': intent,
-    }
-    if not intent:
-        speech_output = '''
-                Can I help you with something else?
-            '''
-        # If the user does not reply to the welcome message or says something
-        # that is not understood, they will be prompted again with this text.
-        reprompt_text = '''
-                Sorry, I did not get that.
-                Can I help you with something else?
-           '''
-    else:
-        speech_output = '''
-                Welcome wine lover
-                Start with a winedown overview by saying overview.
-                You can also say commandments, voting or host prep.
-                What would you like to know about?
-            '''
-        # If the user does not reply to the welcome message or says something
-        # that is not understood, they will be prompted again with this text.
-        reprompt_text = '''
-                Sorry, I did not get that.
-                Start with a winedown overview by saying overview.
-                You can also say commandments, voting or host prep.
-                What would you like to know about?
-           '''
+    session_attributes = session
+    speech_output = '''
+            Welcome wine lover!
+            Start with a winedown overview by saying: overview.
+            You can also say: commandments, voting or host prep.
+            What would you like to know about?
+        '''
+    # If the user does not reply to the welcome message or says something
+    # that is not understood, they will be prompted again with this text.
+    reprompt_text = '''
+            Sorry, I did not get that.
+            Start with a winedown overview by saying overview.
+            You can also say commandments, voting or host prep.
+            What would you like to know about?
+       '''
     should_end_session = False
     return build_response(session_attributes, build_speechlet_response(
         speech_output, reprompt_text, should_end_session))
@@ -95,20 +80,21 @@ def handle_session_end_request():
 def get_overview(intent, session):
     reprompt_text = None
 
+    session_attributes = session
     speech_output = '''
-        Winedown is a dinner party where you invite around 10 of your best foodie friends and eat delicious food paired with delicious wine. 
+        Winedown is a dinner party where you invite around 10 of your best foodie friends and eat delicious food, paired with delicious wine. 
         It is a competition, but you'll have fun even if you come in last. Each person has to make their own dish and bring their own pairing wine.
         Dishes are bite size for each participant and are served one at a time with its pairing wine.
         The host will send a calendar invite at least two weeks before the event with a recap of the last episode, the big announcement of the rule of the next meet and ideally a joke. hehe.
-        The day of, the host will set a long table with some fun decorations, full dinner set and of course two wine glasses on each seat for whites and reds.
+        The day of, the host will set a long table with some fun decorations, full dinner set and of course, two wine glasses on each seat for whites and reds.
         When all your foodie friends have arrived, they will announce what they brought and a lineup will be set to progress from appetizers to dessert.
         They will now present their dishes and wine one at a time.
         Oven should stay warm and contestants can put their dishes in at any time to be prepared for their tunr. They are welcome to use the microwave or the fridge as well.
-        For each participant, no food can be tasted until everyone has both food and wine at which point everyone should cheer.
+        For each participant, no food can be tasted until everyone has both food and wine, at which point everyone should cheer.
         After all dishes have been tasted, foodies will vote on their favorite wine, food and paring.
-        Pairing will take the trophy home and you should be voted for first, second and third place in that category getting four, two and one points respectively.
+        Pairing will take the trophy home and should be voted for first, second and third place in that category getting four, two and one points respectively.
         Winner of the pairing category gets to come without bringing anything next time and gets to set a rule for the next meet.
-        Now go schedule your next winedown!! whooo
+        Now go schedule your next winedown!! whooohoo
     '''
     should_end_session = False
 
@@ -123,17 +109,18 @@ def get_overview(intent, session):
 def get_commandments(intent, session):
     reprompt_text = None
 
+    session_attributes = session
     speech_output = '''
-        1. Though shall cook to win
-        2. Though shall use at least three ingredients
-        3. Though shall honor the winner's wishes
-        4. Though shall arrive on time
-        5. Though shall present your dish and wine
-        6. Though shall cheers before the first bite of each dish
-        7. Though shall not waste food
-        8. Though shall not spill wine
-        9. Though shall not vote for yourself
-        10. Though shall have fun
+        1. Though shall cook to win. 
+        2. Though shall use at least three ingredients. 
+        3. Though shall honor the winner's wishes. 
+        4. Though shall arrive on time. 
+        5. Though shall present your dish and wine. 
+        6. Though shall cheers before the first bite of each dish. 
+        7. Though shall not waste food. 
+        8. Though shall not spill wine. 
+        9. Though shall not vote for yourself. 
+        10. Though shall have fun. 
     '''
     should_end_session = False
 
@@ -144,18 +131,19 @@ def get_commandments(intent, session):
 def get_voting_rules(intent, session):
     reprompt_text = None
 
+    session_attributes = session
     speech_output = '''
         Once all dishes have been tasted, everyone will get a piece of paper and a pen.
         Each participant should vote for Best Wine, Best Food and Best Pairing.
-        You can optionally vote for a random category such as best newbie, best use of the theme, most original, etc.
+        You can optionally vote for a random category such as best newbie, best use of theme, most original, etcetera.
         Best paring must have a first, second and third place on each vote.
         First place on pairing gets four points, second place gets two and third place gets one.
-        All voted should be collected ina magical chest. 
-        Once all votes are in, the moderator will read them out loud and designated counter will pay close attention and record
-        Sometimes counters have had too much wine and miss the count. They should be immediately revoked counting duties.
-        You can optinoally have a mid tally count to add drama
-        Finally once all votes have been read, the final count is announced and the winner is revealed
-        The winner now gets to take the trophy home and set a rule for next meet
+        All voted should be collected in a jar or preferably a small chest. 
+        Once all votes are in, the moderator will read them out loud and designated counter will pay close attention and record.
+        Sometimes counters have had too much wine and miss the count. They should be immediately revoked of their counting duties.
+        You can optinoally have a mid tally count to add drama.
+        Finally once all votes have been read, the final count is announced and the winner is revealed.
+        The winner now gets to take the trophy home and set a rule for next meet.
     '''
     should_end_session = False
 
@@ -166,12 +154,13 @@ def get_voting_rules(intent, session):
 def get_host_preparation(intent, session):
     reprompt_text = None
 
+    session_attributes = session
     speech_output = '''
-        Make sure you have forks, knives, spoons, plates, knapkins, pen and paper and two wine glasses per seat.
-        Have a wine opener in the table as well as water and some fun je ne sais quoi.
-        Dont forget to keep the over warm and make some space in the fridge
+        Make sure you have forks, knives, spoons, plates, knapkins, pen and paper and of course, two wine glasses per seat.
+        Have a wine opener in the table as well as water and some fun decorations.
+        Dont forget to keep the over warm and make some space in the fridge.
         Have some bowls and extra plates available and clean out the dishwasher.
-        Make some space on a side table to put platters after they have been served
+        Make some space on a side table to put platters after they have been served.
         Then you are ready to go!
     '''
     should_end_session = False
@@ -271,7 +260,7 @@ def on_session_started(session_started_request, request, session):
     print("on_session_started requestId=" +
           session_started_request['requestId'] +
           ", sessionId=" + session['sessionId'])
-    print('intent: ' + dumps(request['intent']))
+    #print('intent: ' + dumps(request['intent']))
 
 
 def on_launch(launch_request, session):
@@ -282,7 +271,7 @@ def on_launch(launch_request, session):
     print("on_launch requestId=" + launch_request['requestId'] +
           ", sessionId=" + session['sessionId'])
     # Dispatch to your skill's launch
-    return get_welcome_response()
+    return get_welcome_response(session['sessionId'])
 
 
 def on_intent(intent_request, session):
@@ -299,7 +288,7 @@ def on_intent(intent_request, session):
         return get_overview(intent, session)
     elif intent_name == "commandments":
         return get_commandments(intent, session)
-    elif intent_name == "voting":
+    elif intent_name == "voting_rules":
         return get_voting_rules(intent, session)
     elif intent_name == "host_preparation":
         return get_host_preparation(intent, session)
