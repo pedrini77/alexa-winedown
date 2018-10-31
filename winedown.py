@@ -53,7 +53,7 @@ def get_welcome_response(session):
     speech_output = '''
             Welcome wine lover!
             Start with a winedown overview by saying: overview.
-            You can also say: commandments, voting or host prep.
+            You can also say: commandments, voting, details, or host prep.
             What would you like to know about?
         '''
     # If the user does not reply to the welcome message or says something
@@ -77,24 +77,17 @@ def handle_session_end_request():
         speech_output, None, should_end_session))
 
 
-def get_overview(intent, session):
-    reprompt_text = None
-
+def get_overview(intent, session, reprompt_text):
     session_attributes = session
     speech_output = '''
         Winedown is a dinner party where you invite around 10 of your best foodie friends and eat delicious food, paired with delicious wine. 
-        It is a competition, but you'll have fun even if you come in last. Each person has to make their own dish and bring their own pairing wine.
-        Dishes are bite size for each participant and are served one at a time with its pairing wine.
-        The host will send a calendar invite at least two weeks before the event with a recap of the last episode, the big announcement of the rule of the next meet and ideally a joke. hehe.
-        The day of, the host will set a long table with some fun decorations, full dinner set and of course, two wine glasses on each seat for whites and reds.
-        When all your foodie friends have arrived, they will announce what they brought and a lineup will be set to progress from appetizers to dessert.
-        They will now present their dishes and wine one at a time.
-        Oven should stay warm and contestants can put their dishes in at any time to be prepared for their tunr. They are welcome to use the microwave or the fridge as well.
-        For each participant, no food can be tasted until everyone has both food and wine, at which point everyone should cheer.
-        After all dishes have been tasted, foodies will vote on their favorite wine, food and paring.
-        Pairing will take the trophy home and should be voted for first, second and third place in that category getting four, two and one points respectively.
-        Winner of the pairing category gets to come without bringing anything next time and gets to set a rule for the next meet.
-        Now go schedule your next winedown!! whooohoo
+        It is a competition, but you'll have fun even if you come in last.
+        Each person has to make their own dish and bring their own pairing wine. They get rated on how well they go together.
+        There is one winner who gets to pick the theme or rule for the next meeting.
+        Dishes get better with time as the group learns from each other. Nothing can beat good food, good wine and good friends.
+        Now go schedule your next winedown!! Whahoo!
+
+        For more info, you can say: commandments, voting, details, or host prep.
     '''
     should_end_session = False
 
@@ -106,21 +99,47 @@ def get_overview(intent, session):
     return build_response(session_attributes, speechlet_res)
 
 
-def get_commandments(intent, session):
-    reprompt_text = None
-
+def get_details(intent, session, reprompt_text):
     session_attributes = session
     speech_output = '''
-        1. Though shall cook to win. 
-        2. Though shall use at least three ingredients. 
-        3. Though shall honor the winner's wishes. 
-        4. Though shall arrive on time. 
-        5. Though shall present your dish and wine. 
-        6. Though shall cheers before the first bite of each dish. 
-        7. Though shall not waste food. 
-        8. Though shall not spill wine. 
-        9. Though shall not vote for yourself. 
-        10. Though shall have fun. 
+        The host will send a calendar invite at least two weeks before the event with a recap of the last episode, the big announcement of the rule of the next meet and ideally a joke.
+        The day of, the host will set a long table with some fun decorations, full dinner set and of course, two wine glasses on each seat for whites and reds.
+        When all your foodie friends have arrived, they will announce what they brought and a lineup will be set to progress from appetizers to dessert.
+        They will now present their dishes and wine one at a time.
+        Oven should stay warm and contestants can put their dishes in at any time to be prepared for their turn. They are welcome to use the microwave or the fridge as well.
+        For each participant, no food can be tasted until everyone has both food and wine, at which point everyone should cheer.
+        After all dishes have been tasted, foodies will vote on their favorite wine, food and paring.
+        Pairing will take the trophy home and should be voted for first, second and third place in that category getting four, two and one points respectively.
+        Winner of the pairing category gets to come without bringing anything next time and gets to set a rule for the next meet.
+        Now go schedule your next winedown!! Whahoo!
+
+        For more info, you can say: commandments, voting, overview, or host prep.
+    '''
+    should_end_session = False
+
+
+    # Setting reprompt_text to None signifies that we do not want to reprompt
+    # the user. If the user does not respond or says something that is not
+    # understood, the session will end.
+    speechlet_res = build_speechlet_response(speech_output, reprompt_text, should_end_session)
+    return build_response(session_attributes, speechlet_res)
+
+
+def get_commandments(intent, session, reprompt_text):
+    session_attributes = session
+    speech_output = '''
+        1. Thou shall cook to win. 
+        2. Thou shall use at least three ingredients. 
+        3. Thou shall honor the winner's wishes. 
+        4. Thou shall arrive on time. 
+        5. Thou shall present your dish and wine. 
+        6. Thou shall cheers before the first bite of each dish. 
+        7. Thou shall not waste food. 
+        8. Thou shall not spill wine. 
+        9. Thou shall not vote for yourself. 
+        10. Thou shall have fun.
+
+        For more info, you can say: overview, voting, details, or host prep.
     '''
     should_end_session = False
 
@@ -128,22 +147,22 @@ def get_commandments(intent, session):
     return build_response(session_attributes, speechlet_res)
 
 
-def get_voting_rules(intent, session):
-    reprompt_text = None
-
+def get_voting_rules(intent, session, reprompt_text):
     session_attributes = session
     speech_output = '''
         Once all dishes have been tasted, everyone will get a piece of paper and a pen.
         Each participant should vote for Best Wine, Best Food and Best Pairing.
-        You can optionally vote for a random category such as best newbie, best use of theme, most original, etcetera.
-        Best paring must have a first, second and third place on each vote.
+        You can also optionally vote for a random category such as best newbie, best use of theme, most original, etcetera.
+        The best paring category must have a first, second and third place on each vote.
         First place on pairing gets four points, second place gets two and third place gets one.
-        All voted should be collected in a jar or preferably a small chest. 
-        Once all votes are in, the moderator will read them out loud and designated counter will pay close attention and record.
+        All votes should be collected in a jar or preferably a small chest. 
+        Once all votes are in, the moderator will read them out loud and designated counter will pay close attention and record the results.
         Sometimes counters have had too much wine and miss the count. They should be immediately revoked of their counting duties.
-        You can optinoally have a mid tally count to add drama.
+        You can optionally have a mid tally count to add drama.
         Finally once all votes have been read, the final count is announced and the winner is revealed.
-        The winner now gets to take the trophy home and set a rule for next meet.
+        The winner now gets to take the trophy home and sets a rule for the next meeting.
+
+        For more info, you can say: overview, commandments, details, or host prep.
     '''
     should_end_session = False
 
@@ -151,17 +170,17 @@ def get_voting_rules(intent, session):
     return build_response(session_attributes, speechlet_res)
 
 
-def get_host_preparation(intent, session):
-    reprompt_text = None
-
+def get_host_preparation(intent, session, reprompt_text):
     session_attributes = session
     speech_output = '''
-        Make sure you have forks, knives, spoons, plates, knapkins, pen and paper and of course, two wine glasses per seat.
+        Make sure you have forks, knives, spoons, plates, napkins, pen and paper and of course, two wine glasses per seat.
         Have a wine opener in the table as well as water and some fun decorations.
-        Dont forget to keep the over warm and make some space in the fridge.
+        Don't forget to keep the over warm and make some space in the fridge.
         Have some bowls and extra plates available and clean out the dishwasher.
         Make some space on a side table to put platters after they have been served.
         Then you are ready to go!
+
+        For more info, you can say: overview, voting, details, or commandments.
     '''
     should_end_session = False
 
@@ -169,9 +188,33 @@ def get_host_preparation(intent, session):
     return build_response(session_attributes, speechlet_res)
 
 
-def sample_api_request(intent, session):
+def get_fallback(intent, session, reprompt_text):
+    session_attributes = session
+    speech_output = '''
+        Sorry, I didn't get that.
+
+        You can say: overview, commandments, voting, details, or host prep.
+    '''
+    should_end_session = False
+
+    speechlet_res = build_speechlet_response(speech_output, reprompt_text, should_end_session)
+    return build_response(session_attributes, speechlet_res)
+
+
+def get_help(intent, session, reprompt_text):
+    session_attributes = session
+    speech_output = '''
+        To learn more about winedown you can say: overview, commandments, voting, details, or host prep.
+        What would you like to know about?
+    '''
+    should_end_session = False
+
+    speechlet_res = build_speechlet_response(speech_output, reprompt_text, should_end_session)
+    return build_response(session_attributes, speechlet_res)
+
+
+def sample_api_request(intent, session, reprompt_text):
     # Use this to get data that the user may request with a follow up question
-    reprompt_text = None
     session_attributes = {}
     json = None
     attribute1 = 'default'
@@ -231,10 +274,8 @@ def sample_api_request(intent, session):
     return build_response(session_attributes, speechlet_res)
 
 
-def sample_function_using_session(intent, session):
+def sample_function_using_session(intent, session, reprompt_text):
     #Use this to respond to a follow up question from the user
-    reprompt_text = None
-
     something = session['attributes']['something']
     session_attributes = {
         'something': something,
@@ -282,25 +323,26 @@ def on_intent(intent_request, session):
 
     intent = intent_request['intent']
     intent_name = intent_request['intent']['name']
+    reprompt_text = '''
+        Sorry I didn't get that. To learn more about winedown you can say: overview, commandments, voting, details, or host prep.
+        What would you like to know about?
+    '''
 
     # Dispatch to your skill's intent handlers
     if intent_name == "overview":
-        return get_overview(intent, session)
+        return get_overview(intent, session, reprompt_text)
+    elif intent_name == "details":
+        return get_details(intent, session,reprompt_text)
     elif intent_name == "commandments":
-        return get_commandments(intent, session)
+        return get_commandments(intent, session, reprompt_text)
     elif intent_name == "voting_rules":
-        return get_voting_rules(intent, session)
+        return get_voting_rules(intent, session, reprompt_text)
     elif intent_name == "host_preparation":
-        return get_host_preparation(intent, session)
-    elif intent_name == "when_was_winedown_founded":
-        speech = '''
-            The very first winedown must have happened in the mid to late two thousands, 
-            but the first recorded Winedown was held in March 2013 at Falls Church, Virginia
-        '''
-        speechlet_res = build_speechlet_response(speech, None, True)
-        return build_response({}, speechlet_res)
+        return get_host_preparation(intent, session, reprompt_text)
     elif intent_name == "AMAZON.HelpIntent":
-        return get_welcome_response(intent, session)
+        return get_help(intent, session, reprompt_text)
+    elif intent_name == "AMAZON.FallbackIntent":
+        return get_fallback(intent, session, reprompt_text)
     elif intent_name in ['AMAZON.CancelIntent', 'AMAZON.StopIntent', 'AMAZON.NoIntent']:
         return handle_session_end_request()
     else:
